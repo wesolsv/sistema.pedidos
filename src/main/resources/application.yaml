@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: Sistema
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pedidos
+    username: postgres
+    password: postgres_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      time-to-live: 1m
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-key}

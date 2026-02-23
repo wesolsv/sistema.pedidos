@@ -1,0 +1,65 @@
+# Rodar container posgres 16.3
+docker run --name pedidosdb -p 5432:5432 -e POSTGRES_PASSWORD=postgres_password -e POSTGRES_USER=postgres -e POSTGRES_DB=pedidos --network my-apps-network -d postgres:16.3
+
+# Rodar Pgadmin4
+docker run --name pgadminpedidos -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=admin@admin.com -e PGADMIN_DEFAULT_PASSWORD=admin --network my-apps-network -d dpage/pgadmin4:8.9
+
+#Ao tentar acessar um container através do outro, eles não se comunicam por que não há um network que possa comunicar eles, simples.
+docker network create library-network
+
+Cliente
+
+id UUID
+nomeCompleto varchar(150)
+dataNascimento date
+email varchar(150)
+telefone varchar(20)
+documento varchar(14)
+
+CREATE TABLE IF NOT EXISTS public.cliente
+(
+    id uuid NOT NULL,
+    nome_completo character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(150) COLLATE pg_catalog."default" NOT NULL,
+    telefone character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    data_nascimento date NOT NULL,
+    documento character varying(14) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT cliente_pkey PRIMARY KEY (id),
+    CONSTRAINT cliente_documento_key UNIQUE (documento),
+    CONSTRAINT cliente_email_key UNIQUE (email),
+    CONSTRAINT cliente_telefone_key UNIQUE (telefone),
+    usuario_id UUID UNIQUE
+)
+
+Produto
+
+id UUID
+nome varchar(100)
+modelo varcahar(50)
+preco numeric
+marca varchar(30)
+
+create table produto(
+	id uuid not null primary key,
+	nome varchar(100) not null,
+	modelo varchar(50) not null,
+	preco numeric not null,
+	marca varchar(20) not null
+);
+
+Venda
+
+create table venda(
+	id uuid not null primary key,
+	data date not null,
+	valor_total numeric not null
+);
+
+
+create table usuarios (
+	id uuid not null primary key,
+	nome_usuario varchar(15) not null unique,
+	senha varchar(20) not null,
+	role varchar(100) not null,
+	cliente_id UUID UNIQUE NULL
+);
