@@ -47,12 +47,26 @@ create table produto(
 	marca varchar(20) not null
 );
 
-Venda
+-- Tabela venda
+create table venda (
+    id uuid primary key,
+    data timestamp not null,
+    valor_total numeric not null,
+    cliente_id uuid not null,
+    foreign key (cliente_id) references cliente(id)
+);
 
-create table venda(
-	id uuid not null primary key,
-	data date not null,
-	valor_total numeric not null
+-- Tabela venda_item (resolve N-N com atributos extras)
+create table venda_item (
+    id uuid primary key,
+    venda_id uuid not null,
+    produto_id uuid not null,
+    quantidade integer not null,
+    preco_unitario numeric not null,
+    subtotal numeric not null,
+    foreign key (venda_id) references venda(id) on delete cascade,
+    foreign key (produto_id) references produto(id),
+    unique(venda_id, produto_id)  -- opcional: impede produto duplicado na mesma venda
 );
 
 

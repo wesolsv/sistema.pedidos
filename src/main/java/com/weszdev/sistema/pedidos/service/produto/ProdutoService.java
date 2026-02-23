@@ -21,4 +21,6 @@ public interface ProdutoService {
     void incluirEstoque(Produto produto, Integer quantidade);
 
     void removerDoEstoque(Produto produto, Integer quantidade);
+
+    Produto buscaProdutoComEstoque(UUID id, Integer quantidade);
 }

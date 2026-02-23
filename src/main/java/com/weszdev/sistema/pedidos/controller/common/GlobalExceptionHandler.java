@@ -3,6 +3,7 @@ package com.weszdev.sistema.pedidos.controller.common;
 import com.weszdev.sistema.pedidos.exception.CampoInvalidoException;
 import com.weszdev.sistema.pedidos.exception.OperacaoNaoPermitidaException;
 import com.weszdev.sistema.pedidos.exception.RegistroDuplicadoException;
+import com.weszdev.sistema.pedidos.exception.SemEstoqueException;
 import com.weszdev.sistema.pedidos.model.dto.ErroCampo;
 import com.weszdev.sistema.pedidos.model.dto.ErroResposta;
 import jakarta.validation.ConstraintViolationException;
@@ -69,6 +70,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 "Erro Validação",
                 List.of(new ErroCampo(e.getCampo(), e.getMessage())));
+    }
+
+    @ExceptionHandler(SemEstoqueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErroResposta handleSemEstoqueException(SemEstoqueException e){
+        return ErroResposta.respostaPadrao(e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
