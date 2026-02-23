@@ -4,6 +4,7 @@ import com.weszdev.sistema.pedidos.model.Produto;
 import com.weszdev.sistema.pedidos.model.dto.ProdutoDTO;
 import com.weszdev.sistema.pedidos.model.mappers.ProdutoMapper;
 import com.weszdev.sistema.pedidos.service.produto.ProdutoService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class ProdutoController implements GenericController {
 
     @PutMapping("{id}")
     public ResponseEntity<Object> alterar(@PathVariable("id") String id, @Valid @RequestBody ProdutoDTO produtoDTO){
-        log.info("Atualizando registro de cliente {}", produtoDTO.nome());
+        log.info("Atualizando registro de produto {}", produtoDTO.nome());
 
         UUID idProduto = UUID.fromString(id);
         Optional<Produto> produtoOptional = service.buscarPorId(idProduto);
@@ -55,7 +56,7 @@ public class ProdutoController implements GenericController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ProdutoDTO> buscaCliente(@PathVariable("id") String id){
+    public ResponseEntity<ProdutoDTO> buscaProduto(@PathVariable("id") String id){
         log.info("Buscando informações de produto específico");
         UUID idProduto = UUID.fromString(id);
 
@@ -78,11 +79,25 @@ public class ProdutoController implements GenericController {
     public ResponseEntity<ProdutoDTO> delete(@PathVariable("id") String id){
         log.info("Deletando produto");
         UUID idProduto = UUID.fromString(id);
-        Optional<Produto> autorOptional = service.buscarPorId(idProduto);
-        if (autorOptional.isEmpty()) {
+        Optional<Produto> produtoOptional = service.buscarPorId(idProduto);
+        if (produtoOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.deletar(autorOptional.get());
+        service.deletar(produtoOptional.get());
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("{id}/{qtd}")
+    public ResponseEntity<Object> incluirEstoque(@PathVariable("id") String id, @PathVariable("qtd") Integer qtd){
+        log.info("Inclusão de estoque de produto");
+        UUID idProduto = UUID.fromString(id);
+        Optional<Produto> produtoOptional = service.buscarPorId(idProduto);
+        if (produtoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        service.incluirEstoque(produtoOptional.get(), qtd);
+
+        return ResponseEntity.ok().build();
     }
 }

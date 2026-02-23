@@ -72,11 +72,11 @@ public class ClienteController implements GenericController {
     public ResponseEntity<ClienteDTO> delete(@PathVariable("id") String id){
         log.info("Deletando cliente");
         UUID idCliente = UUID.fromString(id);
-        Optional<Cliente> autorOptional = service.buscarPorId(idCliente);
-        if (autorOptional.isEmpty()) {
+        Optional<Cliente> clienteOptional = service.buscarPorId(idCliente);
+        if (clienteOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        service.deletar(autorOptional.get());
+        service.deletar(clienteOptional.get());
         return ResponseEntity.noContent().build();
     }
 }

@@ -35,4 +35,12 @@ public class Produto implements Serializable {
 
     @NotNull
     private Integer estoque;
+
+    public void incluirEstoque(Integer quantidade){
+        this.estoque += quantidade;
+    }
+
+    public void removerDoEstoque(Integer quantidade){
+        this.estoque -= quantidade;
+    }
 }

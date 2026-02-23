@@ -9,6 +9,7 @@ import com.weszdev.sistema.pedidos.model.dto.RegisterDTO;
 import com.weszdev.sistema.pedidos.repository.UsuarioRepository;
 import com.weszdev.sistema.pedidos.service.cliente.ClienteService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,19 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UsuarioRepository repository;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private ClienteService clienteService;
+    private final AuthenticationManager authenticationManager;
+    private final UsuarioRepository repository;
+    private final TokenService tokenService;
+    private final ClienteService clienteService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO infos){

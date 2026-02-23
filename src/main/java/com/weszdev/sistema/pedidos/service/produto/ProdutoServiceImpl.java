@@ -44,4 +44,16 @@ public class ProdutoServiceImpl implements ProdutoService {
     public List<Produto> listarProdutos() {
        return repository.findAll();
     }
+
+    @Override
+    public void incluirEstoque(Produto produto, Integer quantidade) {
+        produto.incluirEstoque(quantidade);
+        repository.save(produto);
+    }
+
+    @Override
+    public void removerDoEstoque(Produto produto, Integer quantidade) {
+        produto.removerDoEstoque(quantidade);
+        repository.save(produto);
+    }
 }

@@ -17,4 +17,8 @@ public interface ProdutoService {
     void deletar(Produto produto);
 
     List<Produto> listarProdutos();
+
+    void incluirEstoque(Produto produto, Integer quantidade);
+
+    void removerDoEstoque(Produto produto, Integer quantidade);
 }
