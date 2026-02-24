@@ -1,5 +1,6 @@
 package com.weszdev.sistema.pedidos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.weszdev.sistema.pedidos.util.CpfCnpj;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

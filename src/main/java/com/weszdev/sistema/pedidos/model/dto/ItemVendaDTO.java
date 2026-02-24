@@ -3,7 +3,7 @@ package com.weszdev.sistema.pedidos.model.dto;
 import java.util.UUID;
 
 public record ItemVendaDTO(
-        UUID id,
+        UUID produtoId,
         Integer quantidade
 ) {}
 

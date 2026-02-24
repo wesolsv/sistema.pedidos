@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring")
 public interface VendaItemMapper {
 
-    @Mapping(target = "id")
     @Mapping(target = "venda", ignore = true)
-    @Mapping(target = "produto", ignore = true)
+    @Mapping(target = "produto.id", source = "dto.produtoId")
     @Mapping(target = "subtotal", ignore = true)
     VendaItem toEntity(ItemVendaDTO dto);
 

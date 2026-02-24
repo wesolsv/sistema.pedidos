@@ -67,7 +67,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
         Produto produto = produtoOptional.get();
 
-        if(produto.getEstoque() < quantidade) throw new SemEstoqueException("O produto selecionado não tem estoque disponível, estoque atual: " + produto.getEstoque());
+        if(produto.getEstoque() < quantidade) throw new SemEstoqueException("O produto " +produto.getNome()+ " selecionado não tem estoque disponível, estoque atual: " + produto.getEstoque());
 
         return produto;
     }
