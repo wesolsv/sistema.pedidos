@@ -1,6 +1,9 @@
 package com.weszdev.sistema.pedidos.service.venda;
 
 import com.weszdev.sistema.pedidos.exception.CampoInvalidoException;
+import com.weszdev.sistema.pedidos.exception.InformacaoNaoEncontradaException;
+import com.weszdev.sistema.pedidos.model.Cliente;
+import com.weszdev.sistema.pedidos.model.Usuario;
 import com.weszdev.sistema.pedidos.model.Venda;
 import com.weszdev.sistema.pedidos.model.VendaItem;
 import com.weszdev.sistema.pedidos.repository.VendaRepository;
@@ -10,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +44,25 @@ public class VendaServiceImpl implements VendaService{
     @Override
     public List<Venda> listarVendas() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Venda> listarVendasPorCliente(Cliente cliente) {
+        return repository.findAllByCliente(cliente);
+    }
+
+    @Override
+    public Venda buscaVendaCliente(Long numeroVenda, Usuario principal) {
+
+        Optional<Venda> venda;
+
+        if(principal.getPerfilUsuario().getPerfil().equalsIgnoreCase("PADRAO")){
+             venda = repository.findByNumeroPedidoAndClienteId(numeroVenda, principal.getCliente().getId());
+             return venda.orElseThrow(() -> new InformacaoNaoEncontradaException("Venda não encontrada para o cliente"));
+        }
+
+        venda = repository.findByNumeroPedido(numeroVenda);
+        return venda.orElseThrow(() -> new InformacaoNaoEncontradaException("Venda número " + numeroVenda + "não encontrada!"));
     }
 
     private void validacaoDeItens(List<VendaItem> itens) {

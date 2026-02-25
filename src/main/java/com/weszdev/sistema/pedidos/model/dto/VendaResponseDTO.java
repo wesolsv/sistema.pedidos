@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record VendaResponseDTO(
+        Long numeroPedido,
         LocalDateTime data,
         Double valorTotal,
         List<ItemVendaResponseDTO> itens,

@@ -17,4 +17,8 @@ public record ErroResposta(int Status, String mensagem, List<ErroCampo> erros) {
     public static ErroResposta conflito(String mensagem){
         return new ErroResposta(HttpStatus.CONFLICT.value(), mensagem, List.of());
     }
+
+    public static ErroResposta notFound(String messagem){
+        return new ErroResposta(HttpStatus.NOT_FOUND.value(), messagem, List.of());
+    }
 }

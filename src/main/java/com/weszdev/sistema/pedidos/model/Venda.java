@@ -24,6 +24,8 @@ public class Venda {
 
     private LocalDateTime data;
 
+    private Long numeroPedido;
+
     private Double valorTotal;
 
     @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval = true)

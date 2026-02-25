@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("venda")
@@ -42,20 +43,32 @@ public class VendaController implements GenericController{
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping
+    //lista todos, porém quem tem acesso é só ADMIN
+    @GetMapping("listar")
     public ResponseEntity<List<VendaResponseDTO>> listarVendas(){
         List<Venda> vendas = service.listarVendas();
         List<VendaResponseDTO> vendasDTO = vendas.stream().map(mapperResponse::toResponseDTO).toList();
         return ResponseEntity.ok(vendasDTO);
     }
-//
-//    @GetMapping("{id}")
-//    public ResponseEntity<Object> buscarVenda(){
-//
-//    }
-//
-//    @GetMapping("{id_cliente}")
-//    public ResponseEntity<Object> buscarVendasPorCliente(){
-//
-//    }
+
+    //lista todos de quem está fazendo a requisição
+    @GetMapping("byCliente")
+    public ResponseEntity<Object> buscarVendasPorCliente(){
+        Usuario principal = (Usuario) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        List<Venda> vendas = service.listarVendasPorCliente(principal.getCliente());
+        List<VendaResponseDTO> vendasDTO = vendas.stream().map(mapperResponse::toResponseDTO).toList();
+        return ResponseEntity.ok(vendasDTO);
+    }
+
+     //traz a venda por número somente ADMIN pode buscar qualquer venda
+    @GetMapping("buscaVenda/{numeroVenda}")
+    public ResponseEntity<Object> buscaVenda(@PathVariable("numeroVenda") Long numeroVenda){
+        Usuario principal = (Usuario) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        Venda venda = service.buscaVendaCliente(numeroVenda, principal);
+        VendaResponseDTO vendaDTO = mapperResponse.toResponseDTO(venda);
+        return ResponseEntity.ok(vendaDTO);
+    }
 }

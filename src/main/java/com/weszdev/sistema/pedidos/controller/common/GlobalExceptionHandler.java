@@ -1,9 +1,6 @@
 package com.weszdev.sistema.pedidos.controller.common;
 
-import com.weszdev.sistema.pedidos.exception.CampoInvalidoException;
-import com.weszdev.sistema.pedidos.exception.OperacaoNaoPermitidaException;
-import com.weszdev.sistema.pedidos.exception.RegistroDuplicadoException;
-import com.weszdev.sistema.pedidos.exception.SemEstoqueException;
+import com.weszdev.sistema.pedidos.exception.*;
 import com.weszdev.sistema.pedidos.model.dto.ErroCampo;
 import com.weszdev.sistema.pedidos.model.dto.ErroResposta;
 import jakarta.validation.ConstraintViolationException;
@@ -76,6 +73,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErroResposta handleSemEstoqueException(SemEstoqueException e){
         return ErroResposta.respostaPadrao(e.getMessage());
+    }
+
+    @ExceptionHandler(InformacaoNaoEncontradaException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErroResposta handleInfoNotFoundException(InformacaoNaoEncontradaException e){
+        return ErroResposta.notFound(e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
