@@ -7,6 +7,9 @@ docker run --name pgadminpedidos -p 15432:80 -e PGADMIN_DEFAULT_EMAIL=admin@admi
 #Ao tentar acessar um container através do outro, eles não se comunicam por que não há um network que possa comunicar eles, simples.
 docker network create library-network
 
+Rabbitmq
+docker run -d --name my-rmq -p 8081:15672 -p 5672:5672 rabbitmq:3-management
+
 Cliente
 
 id UUID

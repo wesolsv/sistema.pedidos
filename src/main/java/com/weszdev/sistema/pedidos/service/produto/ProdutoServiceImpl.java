@@ -54,9 +54,10 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public void removerDoEstoque(Produto produto, Integer quantidade) {
-        produto.removerDoEstoque(quantidade);
-        repository.save(produto);
+    public void removerDoEstoque(UUID idProduto, Integer quantidade) {
+        Optional<Produto> produto = repository.findById(idProduto);
+        produto.get().removerDoEstoque(quantidade);
+        repository.save(produto.get());
     }
 
     @Override

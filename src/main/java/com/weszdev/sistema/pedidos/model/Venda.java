@@ -24,6 +24,7 @@ public class Venda {
 
     private LocalDateTime data;
 
+    @Column(name = "numero_pedido", insertable = false, updatable = false)
     private Long numeroPedido;
 
     private Double valorTotal;

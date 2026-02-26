@@ -10,8 +10,11 @@ import com.weszdev.sistema.pedidos.repository.VendaRepository;
 import com.weszdev.sistema.pedidos.service.produto.ProdutoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.*;
 
@@ -22,6 +25,7 @@ public class VendaServiceImpl implements VendaService{
 
     private final VendaRepository repository;
     private final ProdutoService produtoService;
+    private final VendaPublisher publisher;
 
     @Override
     @Transactional
@@ -36,7 +40,15 @@ public class VendaServiceImpl implements VendaService{
         novaVenda.setItens(criaListaItensVenda(venda.getItens(), novaVenda));
         novaVenda.calcularValorTotal();
         Venda vendaSalva = repository.save(novaVenda);
-        atualizarEstoque(vendaSalva.getItens());
+
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        publisher.publicarVendaCriada(venda);
+                    }
+                }
+        );
 
         return vendaSalva;
     }
@@ -88,11 +100,4 @@ public class VendaServiceImpl implements VendaService{
                 .toList();
     }
 
-    private void atualizarEstoque(List<VendaItem> lista){
-        log.info("Atualizando estoque de produtos");
-
-        lista.forEach(item -> {
-            produtoService.removerDoEstoque(item.getProduto(), item.getQuantidade());
-        });
-    }
 }
