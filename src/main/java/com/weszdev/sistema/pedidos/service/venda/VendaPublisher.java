@@ -1,11 +1,9 @@
 package com.weszdev.sistema.pedidos.service.venda;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weszdev.sistema.pedidos.model.Venda;
 import com.weszdev.sistema.pedidos.model.VendaItem;
 import com.weszdev.sistema.pedidos.model.dto.ItemRemoveEstoqueDTO;
-import com.weszdev.sistema.pedidos.model.dto.ItemVendaResponseDTO;
 import com.weszdev.sistema.pedidos.model.dto.RemoveEstoqueDTO;
 import com.weszdev.sistema.pedidos.model.dto.VendaEventDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +29,7 @@ public class VendaPublisher {
         RemoveEstoqueDTO remove = new RemoveEstoqueDTO(venda.getId(), converterItens(venda.getItens()));
 
         rabbitTemplate.convertAndSend("estoque.queue", remove);
-//       rabbitTemplate.convertAndSend("email.queue", event);
-//       rabbitTemplate.convertAndSend("log.queue", event);
+        rabbitTemplate.convertAndSend("log.queue", event);
 
         log.info("Mensagens publicadas para a venda {}", venda.getId());
     }

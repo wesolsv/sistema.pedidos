@@ -80,3 +80,10 @@ create table usuarios (
 	role varchar(100) not null,
 	cliente_id UUID UNIQUE NULL
 );
+
+LogVenda
+
+id UUID
+id_venda UUID
+id_Cliente UUID
+data_venda date

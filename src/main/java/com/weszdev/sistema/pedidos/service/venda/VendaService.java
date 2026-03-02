@@ -5,7 +5,6 @@ import com.weszdev.sistema.pedidos.model.Usuario;
 import com.weszdev.sistema.pedidos.model.Venda;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface VendaService {
 

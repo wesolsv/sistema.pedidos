@@ -1,16 +1,11 @@
 package com.weszdev.sistema.pedidos.consumer;
 
-import com.weszdev.sistema.pedidos.model.VendaItem;
 import com.weszdev.sistema.pedidos.model.dto.RemoveEstoqueDTO;
-import com.weszdev.sistema.pedidos.model.dto.VendaEventDTO;
 import com.weszdev.sistema.pedidos.service.produto.ProdutoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.UUID;
 
 @Component
 @Slf4j

@@ -10,7 +10,6 @@ import com.weszdev.sistema.pedidos.repository.VendaRepository;
 import com.weszdev.sistema.pedidos.service.produto.ProdutoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -45,7 +44,7 @@ public class VendaServiceImpl implements VendaService{
                 new TransactionSynchronization() {
                     @Override
                     public void afterCommit() {
-                        publisher.publicarVendaCriada(venda);
+                        publisher.publicarVendaCriada(vendaSalva);
                     }
                 }
         );
